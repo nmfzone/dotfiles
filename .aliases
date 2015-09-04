@@ -1,0 +1,56 @@
+#################### NginX Server SettingUp Aliases ####################
+alias newlaravelserv=laravelnewserver
+alias newphpserv=phpnewserver
+alias editserv=edittheserver
+alias rmserv=removetheserver
+alias listserv="ls /etc/nginx/sites-available/"
+alias symtheserv=symlinkstheserver
+#alias rvddfg=refreshMyServerSymlinks
+
+
+#################### Directory Change Aliases ####################
+alias gotopro="cd ~/Programming"
+alias gotoandro="cd ~/Programming/Android/AndroidStudioProjects"
+alias gotocpp="cd ~/Programming/C++"
+alias thejudge="cd ~/Programming/CONTEST"
+alias gotoGO="cd ~/Programming/GO"
+alias gotogit="cd ~/Programming/Github"
+alias gotojava="cd ~/Programming/Java"
+alias gotojs="cd ~/Programming/Javascript"
+alias gotoangular="cd ~/Programming/Javascript/AngularJS"
+alias gotonode="cd ~/Programming/Javascript/NodeJS"
+alias gotosio="cd ~/Programming/Javascript/Socket.io"
+alias gotophp="cd ~/Programming/PHP/MyServer"
+alias gotowww="cd /var/www"
+alias gotopas="cd ~/Programming/Pascal"
+alias gotopy="cd ~/Programming/Python"
+alias gotoror="cd ~/Programming/RubyOnRails"
+
+
+#################### My VPS Aliases ####################
+alias gomyvps="ssh nmfzone@167.114.207.150 -p 22"
+
+
+#################### Developer Aliases ####################
+### Laravel
+alias art="php artisan"
+
+### NodeJS
+alias npm="sudo npm"
+
+### Ruby on Rails
+#alias gem="sudo gem"
+
+### Python
+alias python="python3"
+#alias python="python2"
+
+### Github
+alias newrepo="createNewGithubRepository"
+
+
+#################### De el el ####################
+
+alias androidku="emulator -avd Try"
+alias usemodem="ping -t 200 www.google.co.id"
+alias usemodem2="ping -t 200 www.facebook.com"
