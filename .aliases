@@ -27,10 +27,6 @@ alias gotopy="cd ~/Programming/Python"
 alias gotoror="cd ~/Programming/RubyOnRails"
 
 
-#################### My VPS Aliases ####################
-alias gomyvps="ssh nmfzone@167.114.207.150 -p 22"
-
-
 #################### Developer Aliases ####################
 ### Laravel
 alias art="php artisan"
