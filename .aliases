@@ -1,16 +1,19 @@
 #################### NginX Server SettingUp Aliases ####################
 alias newlaravelserv=laravelnewserver
 alias newphpserv=phpnewserver
+alias newwpserv=wordpressnewserver
 alias editserv=edittheserver
 alias rmserv=removetheserver
 alias listserv="ls /etc/nginx/sites-available/"
 alias symtheserv=symlinkstheserver
+alias refreshserver="sudo service nginx restart && sudo service php5-fpm restart"
 #alias rvddfg=refreshMyServerSymlinks
 
 
 #################### Directory Change Aliases ####################
 alias gotopro="cd ~/Programming"
 alias gotoandro="cd ~/Programming/Android/AndroidStudioProjects"
+alias gotoc#="cd ~/Programming/C#"
 alias gotocpp="cd ~/Programming/C++"
 alias thejudge="cd ~/Programming/CONTEST"
 alias gotoGO="cd ~/Programming/GO"
@@ -25,10 +28,7 @@ alias gotowww="cd /var/www"
 alias gotopas="cd ~/Programming/Pascal"
 alias gotopy="cd ~/Programming/Python"
 alias gotoror="cd ~/Programming/RubyOnRails"
-
-
-#################### My VPS Aliases ####################
-alias gomyvps="ssh nmfzone@167.114.207.150 -p 22"
+alias openprogramming="subl ~/Programming"
 
 
 #################### Developer Aliases ####################
@@ -45,8 +45,15 @@ alias npm="sudo npm"
 alias python="python3"
 #alias python="python2"
 
+### Wordpress
+alias setpermwp="sudo chmod -R 755 . && sudo chmod -R 775 wp-content"
+
 ### Github
 alias newrepo="createNewGithubRepository"
+
+### MySQL
+alias mysql_list_db="mysql -u root -p -e 'SHOW DATABASES'"
+alias mysql_create_db="mysqladmin -u root -p create $1"
 
 
 #################### De el el ####################
