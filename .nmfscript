@@ -6,10 +6,11 @@ symlinkstheserver() {
 }
 laravelnewserver() {
 	if [[ -z $1 ]] ; then
-		echo "Masukan Nama File!"
+		echo "Masukan Nama Server!"
 	elif [[ -z $2 ]] ; then
 		echo "Masukan Lokasi Projectnya! (/var/www/the_folder/public)"
 	else
+		sudo chmod -R 777 ~/Programming/PHP/MyServer/$2/storage ~/Programming/PHP/MyServer/$2/vendor
 		symlinkstheserver
 		sudo cp /etc/nginx/sites-available/laravel-default /etc/nginx/sites-available/$1.nmflocal
 		sudo ln -s /etc/nginx/sites-available/$1.nmflocal /etc/nginx/sites-enabled/$1.nmflocal
@@ -81,9 +82,48 @@ removetheserver() {
 
 
 #################### Another Complex Function ####################
+###### Change ScudCloud Icon to Slack
+changeScudcloudIcon() {
+	sudo sed -i 's|/opt/scudcloud/resources/scudcloud.png|/opt/scudcloud/resources/slack.png|g' /usr/share/applications/scudcloud.desktop > /dev/null
+	sudo sed -i 's|Name=ScudCloud|Name=Slack|g' /usr/share/applications/scudcloud.desktop > /dev/null
+}
 
+
+###### Github Push Files
+githubPushFiles() {
+	username=$1
+	repo_name=$2
+	commit_desc=$3
+
+	nextStep=0
+	if [ "$1" = "-h" ]  || [ "$1" = "--help" ]; then
+		echo "-1	Github Username"
+		echo "-2	Repository Name"
+		echo "-3 	Commit Description"
+		nextStep=1
+	fi
+
+	if [ "$nextStep" == "1" ]; then
+		return 1
+	fi
+
+	if [ "$username" = "" ] || [ "$repo_name" = "" ] || [ "$commit_desc" = "" ]; then
+		echo "Expected Parameters! Try --help command"
+		return 1
+	fi
+
+	echo -n "Pushing local code to remote ..."
+	git init > /dev/null 2>&1
+	git add . > /dev/null 2>&1
+	git commit -m $commit_desc > /dev/null 2>&1
+	git remote add origin git@github.com:$username/$repo_name.git > /dev/null 2>&1
+	git push -u origin master > /dev/null 2>&1
+	echo " done."
+}
+
+###### Github Create Repository
 github_user_main=(nmfzone)
-github_organization_list=(UiiLabsDev)
+github_organization_list=(UiiLabsDev INVOSE)
 
 contains() {
     local seeking=$1
@@ -108,15 +148,16 @@ contains() {
 }
 createNewGithubRepository() {
 	username=$1
-	repo_name=$2
+	the_repo_name=$2
 	repo_desc=$3
 	desc_lang=$4
 
 	dir_name=`basename $(pwd)`
 	check_username=`contains $username`
+	repo_name=${the_repo_name// /-}
 	invalid_credentials=0
 
-	if [ "$1" = "-h" ]; then
+	if [ "$1" = "-h" ]  || [ "$1" = "--help" ]; then
 		echo "-1	Github Username"
 		echo "-2	Nama Repository"
 		echo "-3	Deskripsi Repository"
@@ -193,3 +234,46 @@ createNewGithubRepository() {
 	git push -u origin master > /dev/null 2>&1
 	echo " done."
 }
+
+
+#################### Programming SettingUp ####################
+
+## NodeJS
+#nvm use 4.1.2 > /dev/null 2>&1 # Use NodeJs version 4.1.2
+
+## C++
+compileCppOpenGL() {
+	if [ -f $1 ]; then
+		rm $1
+	fi
+	if [ -f $1.o ]; then
+		rm $1.o
+	fi
+	g++ $1.cpp -lX11 -lGL -lGLU -lglut -g -Wall -O2 -o $1
+}
+
+## Go Language
+
+
+#################### Others ####################
+## Stop Specific Port
+stopPortFromBeingUsed() {
+	sudo kill $(sudo lsof -t -i:$1) > /dev/null 2>&1
+	echo "Port $1 has been Terminated!"
+}
+## Protect from rm -rf
+unsetopt RM_STAR_SILENT
+setopt RM_STAR_WAIT
+
+
+
+
+
+
+
+
+
+
+
+
+# EOF --->

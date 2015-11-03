@@ -6,6 +6,7 @@ export SSH_KEY_PATH="~/.ssh/id_rsa.pub" # Github ssh
 ### NodeJs
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export NVM_DIR="/home/nmfcomp/.nvm"
+export PATH="$PATH:$HOME/.nvm/versions/node/v4.1.2/bin" # Add bin in Node version
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 
@@ -23,4 +24,4 @@ export PATH="$HOME/Programming/Android/AndroidSDK/sdk/tools:$PATH"
 ## GO
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/Programming/GO/Work
-export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin

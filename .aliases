@@ -7,7 +7,6 @@ alias rmserv=removetheserver
 alias listserv="ls /etc/nginx/sites-available/"
 alias symtheserv=symlinkstheserver
 alias refreshserver="sudo service nginx restart && sudo service php5-fpm restart"
-#alias rvddfg=refreshMyServerSymlinks
 
 
 #################### Directory Change Aliases ####################
@@ -16,6 +15,7 @@ alias gotoandro="cd ~/Programming/Android/AndroidStudioProjects"
 alias gotoc#="cd ~/Programming/C#"
 alias gotocpp="cd ~/Programming/C++"
 alias thejudge="cd ~/Programming/CONTEST"
+alias gotofrsc="cd ~/Programming/Forensic"
 alias gotoGO="cd ~/Programming/GO"
 alias gotogit="cd ~/Programming/Github"
 alias gotojava="cd ~/Programming/Java"
@@ -23,17 +23,20 @@ alias gotojs="cd ~/Programming/Javascript"
 alias gotoangular="cd ~/Programming/Javascript/AngularJS"
 alias gotonode="cd ~/Programming/Javascript/NodeJS"
 alias gotosio="cd ~/Programming/Javascript/Socket.io"
+alias gotokuliah="cd ~/Programming/Kuliah"
 alias gotophp="cd ~/Programming/PHP/MyServer"
 alias gotowww="cd /var/www"
 alias gotopas="cd ~/Programming/Pascal"
 alias gotopy="cd ~/Programming/Python"
 alias gotoror="cd ~/Programming/RubyOnRails"
-alias openprogramming="subl ~/Programming"
+alias openprogramming="atom ~/Programming"
+alias gotosoftware="cd ~/Software"
 
 
 #################### Developer Aliases ####################
 ### Laravel
 alias art="php artisan"
+alias genCtag="ctags -R --languages=php"
 
 ### NodeJS
 alias npm="sudo npm"
@@ -48,16 +51,33 @@ alias python="python3"
 ### Wordpress
 alias setpermwp="sudo chmod -R 755 . && sudo chmod -R 775 wp-content"
 
-### Github
+### Git & Github
 alias newrepo="createNewGithubRepository"
+alias gpuom="git push -u origin master"
+alias gcom="git commit -m '$1'"
+alias gitpush="githubPushFiles"
 
 ### MySQL
 alias mysql_list_db="mysql -u root -p -e 'SHOW DATABASES'"
 alias mysql_create_db="mysqladmin -u root -p create $1"
 
+### C++
+## C++ OpenGL
+alias cppopgl="compileCppOpenGL"
+
+
 
 #################### De el el ####################
 
-alias androidku="emulator -avd Try"
-alias usemodem="ping -t 200 www.google.co.id"
-alias usemodem2="ping -t 200 www.facebook.com"
+alias androidku="~/Software/INSTALL\ AREA/genymotion/genymotion"
+alias usemodem="ping -c 20000000 www.google.co.id"
+alias usemodem2="ping -c 20000000 www.facebook.com"
+alias perbaikislack="changeScudcloudIcon"
+alias runngrok="./ngrok http -subdomain=nmflabs $1"
+alias cari_file="sudo find . -print | grep -i '$1'"
+alias stopport="stopPortFromBeingUsed"
+alias cls="clear"
+
+
+#################### Temporary ####################
+alias rsjihon="/home/nmfcomp/Programming/PHP/MyServer/RsJIH/ngrok http -subdomain=nmflabs 8000"
