@@ -1,0 +1,25 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	root /var/www/the_folder/public;
+	index index.html index.htm index.php;
+
+	server_name the_server.nmflocal.io;
+
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+	location ~ \.php$ {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
+		include fastcgi_params;
+	}
+
+	# deny access to .htaccess files, if Apache's document root
+	location ~ /\.ht {
+		deny all;
+	}
+}
