@@ -1,83 +1,165 @@
-#################### NginX Server SettingUp Aliases ####################
-alias newlaravelserv=laravelnewserver
-alias newphpserv=phpnewserver
-alias newwpserv=wordpressnewserver
-alias editserv=edittheserver
-alias rmserv=removetheserver
-alias listserv="ls /etc/nginx/sites-available/"
-alias symtheserv=symlinkstheserver
-alias refreshserver="sudo service nginx restart && sudo service php5-fpm restart"
+#############################################################
+# System
+#############################################################
+
+# Etc
+alias cls="clear"
+alias stopport="_killPort"
+alias cs="_cheatsheet"
+alias nosleep="caffeinate -t 36000"
+alias testsslciphers="_testSSLCiphers"
+alias killgpg="gpgconf --kill gpg-agent"
+alias emptytrash="sudo rm -rf ~/.Trash/*"
+alias extract="_extract"
+alias showhidden="defaults write com.apple.Finder AppleShowAllFiles true && killall Finder"
+alias hidehidden="defaults write com.apple.Finder AppleShowAllFiles false && killall Finder"
+# Tuxera gives us 15 days trials. We can extend it by removes it's app then install it again.
+alias rmtuxera="sudo rm -rf /Applications/Tuxera\ Disk\ Manager.app && sudo rm -rf /Library/Application\ Support/Tuxera\ NTFS && sudo rm -rf /Library/Filesystems/fusefs_txantfs.fs"
+alias video-tool="_videoTools"
+
+# PHP
+alias restartphp="brew services restart php72"
+
+# IDEA
+alias idea="_idea"
+
+# ZSH
+alias emptyhistory="echo '' > ~/.zsh_history"
+alias zshfresh="source ~/.zshrc"
+
+# SSH
+alias cpsshkey="pbcopy < ~/.ssh/id_rsa.pub"
+
+weather() { curl -4 wttr.in/${1:-~Sleman}?lang=id }
 
 
-#################### Directory Change Aliases ####################
-alias gotopro="cd ~/Programming"
-alias gotoandro="cd ~/Programming/Android/AndroidStudioProjects"
-alias gotoc#="cd ~/Programming/C#"
-alias gotocpp="cd ~/Programming/C++"
-alias thejudge="cd ~/Programming/CONTEST"
-alias gotofrsc="cd ~/Programming/Forensic"
-alias gotoGO="cd ~/Programming/GO"
-alias gotogit="cd ~/Programming/Github"
-alias gotojava="cd ~/Programming/Java"
-alias gotojs="cd ~/Programming/Javascript"
-alias gotoangular="cd ~/Programming/Javascript/AngularJS"
-alias gotonode="cd ~/Programming/Javascript/NodeJS"
-alias gotosio="cd ~/Programming/Javascript/Socket.io"
-alias gotokuliah="cd ~/Programming/Kuliah"
-alias gotophp="cd ~/Programming/PHP/MyServer"
-alias gotowww="cd /var/www"
-alias gotopas="cd ~/Programming/Pascal"
-alias gotopy="cd ~/Programming/Python"
-alias gotoror="cd ~/Programming/RubyOnRails"
-alias openprogramming="atom ~/Programming"
-alias gotosoftware="cd ~/Software"
 
 
-#################### Developer Aliases ####################
-### Laravel
+#############################################################
+# Software Developer
+#############################################################
+
+# Python
+alias py-nve="pyenv virtualenv"
+alias py-act="pyenv activate"
+alias py-list="pyenv virtualenvs"
+alias py-rjn="jupyter notebook"
+alias pip-upgrade="pip install -U pip"
+
+### Django
+alias dj-new="django-admin startproject"
+alias dj-serv="python manage.py runserver"
+alias dj-migrate="python manage.py migrate"
+alias dj-cls="python manage.py collectstatic"
+alias dj-migrate-fresh="python manage.py migrate --fake"
+alias dj-shell="python manage.py shell"
+alias dj-napp="python manage.py startapp"
+alias dj-celery="_runCelery"
+
+
+# Mysql
+alias mysql="mysql -u root -p"
+alias mysql_list_db="mysql -u root -p -e 'SHOW DATABASES'"
+alias mysql_create_db="mysqladmin -u root -p create"
+alias mysql_drop_db="mysqladmin -u root -p drop"
+alias mysql_import_db="_mysqlImportDB"
+alias mysql_drcr_db="_mysqlDropCreate"
+
+# Javascript
+## NodeJs
+alias npm-start="npm start -- --reset-cache"
+alias npm-start-andro="adb reverse tcp:8081 tcp:8081 && npm start -- --reset-cache"
+## React Native
+alias rn="react-native"
+alias rn-andro="rn run-android"
+alias rn-ios="rn run-ios --simulator=\"iPhone 7\""
+## NuxtJs
+alias nx-dev="rm -rf .nuxt/ build/ > /dev/null 2>&1 && yarn dev"
+
+# PHP
+## Etc
+alias runserv="_runPHPServer"
+alias phpini="idea /usr/local/etc/php/7.3/php.ini"
+alias phpunit="./vendor/bin/phpunit"
+alias behat="./vendor/bin/behat"
+alias pu="php -c ~/.disable-xdebug.ini vendor/bin/phpunit"
+alias puf="pu --filter "
+
+## Composer
+alias csr="_composerCheat"
+
+## Wordpress
+alias wprun="wp server --docroot=web --port=8000"
+
+## Laravel
 alias art="php artisan"
 alias genCtag="ctags -R --languages=php"
+alias l-fresh="composer dump-autoload && art clear-compiled && art cache:clear && art view:clear && art config:clear && art route:clear"
+alias l-cache="art view:cache && art route:cache && art config:cache"
+alias phpcscheck="~/.composer/vendor/bin/phpcs --standard=PSR2 app/"
+alias phpcsfixer="~/.composer/vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format udiff"
+alias l-queue="art queue:work --sleep=1 --tries=2 --queue=high,medium,low"
+alias l-sc="art schedule:run"
+alias l-sc-lo="art cache:clear && while true; do l-sc; sleep 15; done"
+alias l-mfs="art migrate:fresh --seed"
+alias l-sdp="art db:seed --class='PreliminaryDataSeeder'"
+alias l-fxs="sudo chown -R __USERNAME__: storage/ && sudo chmod -R ug+rwx storage/ && sudo chmod 0660 storage/oauth*"
 
-### NodeJS
-alias npm="sudo npm"
+## Lumen
+alias lumenfresh="composer dump-autoload && art cache:clear"
 
-### Ruby on Rails
-#alias gem="sudo gem"
+## Redis
+alias redisrm="redis-cli flushall"
 
-### Python
-alias python="python3"
-#alias python="python2"
+# Java || Scala
+## Activator & SBT
+alias act="activator"
+alias actn="act new"
 
-### Wordpress
-alias setpermwp="sudo chmod -R 755 . && sudo chmod -R 775 wp-content"
+# DevOps
+## Docker
+alias docker="_runDocker"
+alias run-kali="docker run -t -i kalilinux/kali-linux-docker /bin/bash"
 
-### Git & Github
-alias newrepo="createNewGithubRepository"
-alias gpuom="git push -u origin master"
-alias gcom="git commit -m '$1'"
-alias gitpush="githubPushFiles"
+# Android
+alias genkeystore="_generateAndroidKeystore"
+alias genapk="./gradlew assembleRelease"
+alias myandro="$ANDROID_HOME/tools/emulator -avd Nexus_5X_API_25_x86 -netspeed full -netdelay none"
 
-### MySQL
-alias mysql_list_db="mysql -u root -p -e 'SHOW DATABASES'"
-alias mysql_create_db="mysqladmin -u root -p create $1"
+# C++
+alias compile='_compileCpp'
 
-### C++
-## C++ OpenGL
-alias cppopgl="compileCppOpenGL"
+# Git
+alias gd-ep="gd -- . ':!public'" # git diff except public folder.
+alias gcmc="_gitCommitCount" # get commit counts
+alias gda="gd HEAD"
+alias gitcheat="cat ~/.oh-my-zsh/plugins/git/git.plugin.zsh | grep"
+alias gmauh="git merge --allow-unrelated-histories"
+alias gresetfile="git checkout HEAD -- $1" # reset changes to a file
+alias gdlcm="git diff HEAD^ HEAD" # git diff with last commit
+alias gdiff='function _gdiff() {
+    branch=$1
+    file=$2
+	origin=$3
+
+    if [[ -z $branch ]]; then
+        branch="master"
+    fi
+
+	if [[ -z $origin ]]; then
+		origin="origin"
+	fi
+
+	git diff $origin/$branch:./ -- $file
+};
+_gdiff'
+alias gresetmerge="git reset --hard HEAD~1"
 
 
+#############################################################
+# ETC
+#############################################################
 
-#################### De el el ####################
-
-alias androidku="~/Software/INSTALL\ AREA/genymotion/genymotion"
-alias usemodem="ping -c 20000000 www.google.co.id"
-alias usemodem2="ping -c 20000000 www.facebook.com"
-alias perbaikislack="changeScudcloudIcon"
-alias runngrok="./ngrok http -subdomain=nmflabs $1"
-alias cari_file="sudo find . -print | grep -i '$1'"
-alias stopport="stopPortFromBeingUsed"
-alias cls="clear"
-
-
-#################### Temporary ####################
-alias rsjihon="/home/nmfcomp/Programming/PHP/MyServer/RsJIH/ngrok http -subdomain=nmflabs 8000"
+### Intellij IDEA
+alias ngrok="_runngrok"
+alias sf="_searchFileInFolder"

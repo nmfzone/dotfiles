@@ -1,4 +1,7 @@
-README
-======
+# dotfiles
 
-dotfiles is Github Repository by me
+Collection of dotfiles in my environment. 🔥
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

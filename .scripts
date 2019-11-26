@@ -1,0 +1,313 @@
+## Python
+_runCelery() {
+    # Require ttab (pip install ttab)
+    app=$1
+    virtualenv=$2
+
+    if [ "$app" = "" ]; then
+        app="core"
+    fi
+
+    if [ "$virtualenv" != "" ]; then
+        virtualenv="py-act ${virtualenv};"
+    fi
+
+     ttab "rabbitmq-server"
+     ttab "sleep 10; $virtualenv celery -A $app worker --beat -l INFO"
+}
+
+## PHP
+_runPHPServer() {
+    if  [ "$1" = "" ]; then
+        php -S localhost:8000
+	elif [ "$1" = "public" ]; then
+		php -S localhost:8000 -t public
+	else
+		php -S localhost:$1 -t $2
+	fi
+}
+_composerCheat() {
+    cmd=$1
+
+    if [ "$cmd" = "i" ]; then
+        composer install
+    elif [ "$cmd" = "u" ]; then
+        composer update
+    elif [ "$cmd" = "da" ]; then
+        composer dump-autoload
+    elif [ "$cmd" = "su" ]; then
+        sudo composer self-update
+    fi
+}
+
+## Mysql
+_mysqlImportDB() {
+    # $1 => Database Name
+    # $2 => SQL Path
+
+    mysql -u root -p $1 < $2
+}
+_mysqlDropCreate() {
+    mysqladmin -u root -p drop $1
+    mysqladmin -u root -p create $1
+}
+
+## Git
+_gitCommitCount() {
+    branch=$1
+
+    if [ "$branch" = "" ]; then
+        git rev-list HEAD --count
+    else
+        git rev-list $branch --count
+    fi
+}
+
+## Stop Specific Port
+_killPort() {
+	sudo kill $(sudo lsof -t -i:$1) > /dev/null 2>&1
+	echo "Port $1 has been Terminated!"
+}
+
+## Run Ngrok
+_runngrok() {
+    domain=$1
+    port=$2
+
+    if [ "$domain" = "" ]; then
+        echo "Please specify the tunnel domain!"
+        return 1
+	else
+        if [ "$2" = "" ]; then
+            port=8000
+            echo "Using default port 8000"
+        fi
+
+	    $INSTALL_HOME/ngrok http -bind-tls=true -subdomain=$domain $port
+    fi
+}
+
+## Terminal
+_cheatsheet() {
+    echo "Terms"
+    echo "-> AL : Arrow Left"
+    echo "-> ^ : Shift\n"
+
+    echo "== Terminal =="
+    echo "Jump to Beginning of Line: CTRL+A / fn+AL"
+    echo "Jump to End of Line: CTRL+E"
+    echo "Go to Next Line: CTRL+N"
+    echo "Go to Previous Line: CTRL+P"
+    echo "Delete Previous Word: CTRL+W"
+    echo "Delete Line from Cursor to Beginning: CTRL+U"
+    echo "Delete Line from Cursor to End: CTRL+K\n"
+
+    echo "== GIT =="
+    echo "Diff with last commit: git diff HEAD^ HEAD\n"
+
+    echo "== Intellij =="
+    echo "Select next occurence: CTRL+G"
+    echo "Close current tab: CTRL+W"
+
+    echo "== Atom =="
+    echo "Select every beginning of line: CMD+^+L"
+}
+_searchFileInFolder() {
+    _path=$1
+    _filename=$2
+
+    if [ "$_path" = "" ]; then
+        echo "Please specify the search path!"
+        return 1
+    elif [ "$_filename" = "" ]; then
+        echo "Please specify the filename to search!"
+        return 1
+    fi
+
+    if [ -d "$_path" ]; then
+        find $_path -type f 2>/dev/null | grep "$_filename"
+    else
+        echo "The path should be a directory!"
+        return 1
+    fi
+}
+_videoTools() {
+    command=$1
+    result_name=`uuidgen`
+
+    if [ "$command" = "trim" ]; then
+        ffmpeg -i $2 -ss $3 -t $4 -async 1 -max_muxing_queue_size 9999 ~/Desktop/${result_name}.mp4
+
+        if [ $? -eq 0 ]; then
+            echo "\nVideo saved to ~/Desktop/${result_name}.mp4"
+        fi
+    else
+        echo "Video Tools with key '$command' not available!\n"
+        return 1
+    fi
+}
+
+## C++
+_compileCpp() {
+    file=$1
+    c11=$2
+    f_name=`echo $file | cut -d'.' -f1`
+
+    if [ "$c11" = "" ]; then
+        g++ $file -o $f_name
+    elif [ "$c11" = "y" ]; then
+        g++ -std=c++11 $file -o $f_name
+    fi
+}
+
+## Docker
+_runDocker() {
+    alias=$1
+
+    if [ "$alias" = "exec-bash" ]; then
+        docker exec -it $2 /bin/bash
+    elif [ "$alias" = "exec-sh" ]; then
+        docker exec -it $2 /bin/sh
+    elif [ "$alias" = "stop-all" ]; then
+        docker stop `docker ps -qa`
+    elif [ "$alias" = "rm-uti" ]; then
+        # Remove all untagged image
+        docker rmi $(docker images -f "dangling=true" -q)
+    elif [ "$alias" = "cleanup-all" ]; then
+        # DANGER!
+        # This will empty docker! Remove all containers and images.
+
+        # Remove all containers
+        docker stop $(docker ps -a -q)
+        docker rm $(docker ps -a -q)
+
+        # Remove all images
+        docker stop $(docker ps -a -q)
+        docker rm $(docker ps -a -q)
+        docker rmi $(docker images -a -q)
+    else
+        docker $@
+    fi
+}
+
+## Java
+_runPlayFramework() {
+    port=$1
+    isDebug=$2
+
+    if [ "$port" = "" ]; then
+        # play run --http.port=8000
+        activator "~run 8000" # Play 2.x
+    elif [ "$port" = "-" ] && [ "$isDebug" = "debug" ]; then
+        activator -jvm-debug 9999 "run 8000"
+    elif [ "$port" -ne "-" ] && [ "$isDebug" = "debug" ]; then
+        activator -jvm-debug 9999 "run $port"
+    else
+        activator "~run $port"
+    fi
+}
+_generateAndroidKeystore() {
+    keytool -genkey -v -keystore $1.keystore -alias $1 -keyalg RSA -keysize 2048 -validity 10000
+}
+
+## SSL
+_testSSLCiphers() {
+    DOMAIN=$1
+    SERVER=$DOMAIN:443
+    DELAY=1
+    ciphers=$(openssl ciphers 'ALL:eNULL' | sed -e 's/:/ /g')
+
+    echo Obtaining cipher list from $(openssl version).
+
+    for cipher in ${ciphers[@]}
+    do
+    echo -n Testing $cipher...
+    result=$(echo -n | openssl s_client -cipher "$cipher" -connect $SERVER 2>&1)
+    if [[ "$result" =~ ":error:" ]] ; then
+      error=$(echo -n $result | cut -d':' -f6)
+      echo NO \($error\)
+    else
+      if [[ "$result" =~ "Cipher is ${cipher}" || "$result" =~ "Cipher    :" ]] ; then
+        echo YES
+      else
+        echo UNKNOWN RESPONSE
+        echo $result
+      fi
+    fi
+    sleep $DELAY
+    done
+}
+
+## IDEA
+_idea() {
+    IDEA=`ls -1d /Applications/IntelliJ\ * | tail -n1`
+    wd=`pwd`
+
+    if [ -d "$1" ]; then
+      wd=`ls -1d "$1" | head -n1`
+    fi
+
+    if [ -f "$1" ]; then
+      open -a "$IDEA" "$1"
+    else
+        pushd $wd > /dev/null
+
+        if [ -d ".idea" ]; then
+          open -a "$IDEA" .
+        elif [ -f *.ipr ]; then
+          open -a "$IDEA" `ls -1d *.ipr | head -n1`
+        elif [ -f pom.xml ]; then
+          open -a "$IDEA" "pom.xml"
+        else
+          open "$IDEA"
+        fi
+
+        popd > /dev/null
+    fi
+}
+
+
+# credit: http://nparikh.org/notes/zshrc.txt
+# Usage: extract <file>
+# Description: extracts archived files / mounts disk images
+# Note: .dmg/hdiutil is Mac OS X-specific.
+_extract() {
+    if [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2)  tar -jxvf $1                        ;;
+            *.tar.gz)   tar -zxvf $1                        ;;
+            *.bz2)      bunzip2 $1                          ;;
+            *.dmg)      hdiutil mount $1                    ;;
+            *.gz)       gunzip $1                           ;;
+            *.tar)      tar -xvf $1                         ;;
+            *.tbz2)     tar -jxvf $1                        ;;
+            *.tgz)      tar -zxvf $1                        ;;
+            *.zip)      unzip $1                            ;;
+            *.ZIP)      unzip $1                            ;;
+            *.pax)      cat $1 | pax -r                     ;;
+            *.pax.Z)    uncompress $1 --stdout | pax -r     ;;
+            *.Z)        uncompress $1                       ;;
+            *)          echo "'$1' cannot be extracted/mounted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+## Python Virtualenv
+__pyenv_version_ps1 ()
+{
+    # Styles
+    GREEN="%{$fg[green]%}"
+    BLUE="%{$fg[blue]%}"
+    RESET="%{$fg[reset_color]%}"
+
+    [[ -n ${VIRTUAL_ENV} ]] || return
+
+    echo -n "%{$GREEN%}(${VIRTUAL_ENV:t})%{$RESET%} "
+}
+PROMPT="\$(__pyenv_version_ps1)${PROMPT}"
+
+## Protect from rm -rf
+unsetopt RM_STAR_SILENT
+setopt RM_STAR_WAIT

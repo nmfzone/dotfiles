@@ -1,0 +1,57 @@
+INSTALL_HOME="$HOME/Software/INSTALL_AREA"
+WORKSPACE="$HOME/Workspace"
+GITHUB_USER="__GITHUB_USERNAME__"
+EDITOR="idea"
+REACT_EDITOR=idea
+AWS_DEFAULT_REGION=ap-southeast-1
+HOMEBREW_GITHUB_API_TOKEN=__GITHUB_TOKEN_FOR_HOMEBREW__
+# Puppeteer needs this.
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+
+### GitHub
+export SSH_KEY_PATH="~/.ssh/id_rsa.pub" # Github ssh
+
+### MySql
+export MYSQL_PATH=/usr/local/Cellar/mysql@5.7/5.7.28/
+export PATH=$PATH:$MYSQL_PATH/bin
+
+### Android
+export ANDROID_HOME="$WORKSPACE/Android/sdk"
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/29.0.2
+
+### PgSql
+export PGSQL_PATH=/Applications/Postgres.app/Contents/Versions/latest
+export PATH="$PATH:$PGSQL_PATH/bin"
+
+### Composer
+export PATH=$PATH:~/.composer/vendor/bin
+
+### Javascript
+#### NodeJs
+##### NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+### Java
+export JAVA_HOME=$(/usr/libexec/java_home)
+
+### GOlang
+export GOROOT="$(brew --prefix golang)/libexec"
+export GOPATH=$WORKSPACE/GO/GoProjects
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
+### Python
+export CFLAGS="-I$(brew --prefix openssl)/include"
+export LDFLAGS="-L$(brew --prefix openssl)/lib"
+#### Pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PYTHONSTARTUP=~/.py_startup.py # pip install gnureadline
+#### Virtualenv
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+### Ngrok
+export PATH="$PATH:$INSTALL_HOME/ngrok"
+
+### RabbitMq
+export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
