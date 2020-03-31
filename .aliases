@@ -15,10 +15,14 @@ alias showhidden="defaults write com.apple.Finder AppleShowAllFiles true && kill
 alias hidehidden="defaults write com.apple.Finder AppleShowAllFiles false && killall Finder"
 # Tuxera gives us 15 days trials. We can extend it by removes it's app then install it again.
 alias rmtuxera="sudo rm -rf /Applications/Tuxera\ Disk\ Manager.app && sudo rm -rf /Library/Application\ Support/Tuxera\ NTFS && sudo rm -rf /Library/Filesystems/fusefs_txantfs.fs"
+alias image-tool="_imageTools"
 alias video-tool="_videoTools"
+alias kill-chrome-headless="pgrep chromedriver | xargs kill"
+alias kill-chrome="pgrep -x 'Google Chrome' | xargs kill"
+alias purge-appstore-cache="rm -rf ~/Library/Caches/store*"
 
 # PHP
-alias restartphp="brew services restart php72"
+alias restartphp="brew services restart php73"
 
 # IDEA
 alias idea="_idea"
@@ -47,13 +51,9 @@ alias py-rjn="jupyter notebook"
 alias pip-upgrade="pip install -U pip"
 
 ### Django
+alias dj="_django_commands"
 alias dj-new="django-admin startproject"
-alias dj-serv="python manage.py runserver"
-alias dj-migrate="python manage.py migrate"
 alias dj-cls="python manage.py collectstatic"
-alias dj-migrate-fresh="python manage.py migrate --fake"
-alias dj-shell="python manage.py shell"
-alias dj-napp="python manage.py startapp"
 alias dj-celery="_runCelery"
 
 

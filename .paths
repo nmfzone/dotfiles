@@ -9,6 +9,10 @@ HOMEBREW_GITHUB_API_TOKEN=__GITHUB_TOKEN_FOR_HOMEBREW__
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 
+### ETC
+export PATH=$PATH:/usr/local/opt/gettext/bin
+export PATH=$PATH:$HOME/.local/bin
+
 ### GitHub
 export SSH_KEY_PATH="~/.ssh/id_rsa.pub" # Github ssh
 
@@ -42,7 +46,7 @@ export GOPATH=$WORKSPACE/GO/GoProjects
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 ### Python
-export CFLAGS="-I$(brew --prefix openssl)/include"
+export CPPFLAGS="-I$(brew --prefix openssl)/include"
 export LDFLAGS="-L$(brew --prefix openssl)/lib"
 #### Pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi

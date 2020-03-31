@@ -1,10 +1,10 @@
 ## Python
 _runCelery() {
-    # Require ttab (pip install ttab)
     app=$1
     virtualenv=$2
+    use_redis=$3
 
-    if [ "$app" = "" ]; then
+    if [ "$app" = "-" ]; then
         app="core"
     fi
 
@@ -12,8 +12,50 @@ _runCelery() {
         virtualenv="py-act ${virtualenv};"
     fi
 
-     ttab "rabbitmq-server"
-     ttab "sleep 10; $virtualenv celery -A $app worker --beat -l INFO"
+    if [ "$use_redis" != "y" ]; then
+        ttab "rabbitmq-server"
+        ttab "sleep 10; $virtualenv celery -A $app worker --beat -l INFO"
+        ttab "sleep 15; $virtualenv celery -A $app flower"
+    else
+        ttab "$virtualenv celery -A $app worker --beat -l INFO"
+        ttab "sleep 10; $virtualenv celery -A $app flower"
+    fi
+}
+
+### Django
+_django_commands() {
+    _show_help() {
+        echo "TODO"
+    }
+
+    command=$1
+
+    if  [ "$command" = "" ]; then
+        _show_help
+    elif [ "$command" = "serve" ]; then
+        python manage.py runserver "${@:2}"
+    elif [ "$command" = "migrate" ]; then
+        python manage.py migrate "${@:2}"
+    elif [ "$command" = "migrate:fresh" ]; then
+        python manage.py migratefresh "${@:2}"
+    elif [ "$command" = "migrate:refresh" ]; then
+        python manage.py migraterefresh "${@:2}"
+    elif [ "$command" = "napp" ]; then
+        python manage.py startapp "${@:2}"
+    elif [ "$command" = "shell" ]; then
+        python manage.py shell "${@:2}"
+    elif [ "$command" = "migrate:revert" ]; then
+        if [ "$2" != "" ]; then
+            python manage.py migrate $2 zero
+        else
+            python manage.py migrate zero
+        fi
+    elif [ "$command" = "--help" ]; then
+        _show_help
+    else
+        echo "Command not available."
+        return 1
+    fi
 }
 
 ## PHP
@@ -131,15 +173,46 @@ _searchFileInFolder() {
         return 1
     fi
 }
+_imageTools() {
+    command=$1
+    result_name=`uuidgen`
+
+    # Documentation: https://imagemagick.org/script/command-line-processing.php
+    if [ "$command" = "compress" ]; then
+        magick mogrify -resize 60% *
+    else
+        echo "Image Tools with key '$command' not available!\n"
+        return 1
+    fi
+}
 _videoTools() {
     command=$1
     result_name=`uuidgen`
 
-    if [ "$command" = "trim" ]; then
-        ffmpeg -i $2 -ss $3 -t $4 -async 1 -max_muxing_queue_size 9999 ~/Desktop/${result_name}.mp4
+    if [ "$command" = "compress" ]; then
+        # -b:v ==> bitrate video
+        # -b:a ==> bitrate audio
+        ffmpeg -i $2 -c:v libx264 -b:v 1.5M -c:a aac -b:a 128k ~/Desktop/video-${result_name}.mp4
 
         if [ $? -eq 0 ]; then
-            echo "\nVideo saved to ~/Desktop/${result_name}.mp4"
+            echo "Video saved to ~/Desktop/video-${result_name}.mp4"
+        fi
+    elif [ "$command" = "trim" ]; then
+        ffmpeg -i $2 -ss $3 -t $4 -async 1 -max_muxing_queue_size 9999 ~/Desktop/video-${result_name}.mp4
+
+        if [ $? -eq 0 ]; then
+            echo "Video saved to ~/Desktop/video-${result_name}.mp4"
+        fi
+    elif [ "$command" = "convert" ]; then
+        if [ "$2" == "" ]; then
+            echo "Please specify a video!"
+            return 1
+        fi
+
+        ffmpeg -i $2 -vcodec libx264 -acodec aac ~/Desktop/video-${result_name}.mp4
+
+        if [ $? -eq 0 ]; then
+            echo "Video saved to ~/Desktop/video-${result_name}.mp4"
         fi
     else
         echo "Video Tools with key '$command' not available!\n"
@@ -287,6 +360,13 @@ _extract() {
             *.pax)      cat $1 | pax -r                     ;;
             *.pax.Z)    uncompress $1 --stdout | pax -r     ;;
             *.Z)        uncompress $1                       ;;
+            *.rar)
+                if [ -x "$(command -v unrar)" ]; then
+                    unrar x $1
+                else
+                    echo "You should install unrar first via 'brew install unrar'."
+                fi
+                ;;
             *)          echo "'$1' cannot be extracted/mounted via extract()" ;;
         esac
     else
